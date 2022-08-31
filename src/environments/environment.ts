@@ -4,7 +4,18 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://ergast.com/api/",
+  apiF1Series: "https://ergast.com/api/f1",
+  endpoints: {
+    seasons: "seasons.json",
+    worldChampionByYear: (year: number) => `${year}/driverStandings/1.json`,
+    allRacesWinnersOfAYear: (year: number) => `${year}/results/1.json`,
+  },
+  config: {
+    pagination: {
+      pageLimit: 30
+    },
+    initialYearForF1Series: 1950
+  }
 };
 
 /*
