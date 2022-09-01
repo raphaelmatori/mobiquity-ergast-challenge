@@ -1,0 +1,7 @@
+<div class="list-wrapper">
+  <ul>
+    <li *ngFor="let item of items" (click)="selectedItem(item.id)">
+      {{ item.title }}
+    </li>
+  </ul>
+</div>

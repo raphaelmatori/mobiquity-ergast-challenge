@@ -2,9 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { environment } from "./../../../environments/environment";
-import { DriverStanding } from "./../../model/driver-standing.interface";
-import { Race } from "./../../model/race.interface";
-import { Season } from "./../../model/season.interface";
+import { Paginate } from "./../../models/paginate.interface";
 
 @Injectable({
   providedIn: "root",
@@ -24,18 +22,27 @@ export class ErgastService {
   public getSeasons(
     offset: number = 0,
     limit: number = this.CONFIG.pagination.pageLimit
-  ): Observable<Season[]> {
+  ): Observable<Paginate> {
     return this.httpClient
       .get<any>(
         `${this.API_F1_SERIES}/${this.ENDPOINTS.seasons}?offset=${offset}&limit=${limit}`
       )
-      .pipe(map((response) => response?.MRData?.SeasonTable?.Seasons));
+      .pipe(
+        map((response) => {
+          return {
+            limit: +response?.MRData?.limit,
+            offset: +response?.MRData?.offset,
+            total: +response?.MRData?.total,
+            results: response?.MRData?.SeasonTable?.Seasons,
+          };
+        })
+      );
   }
 
   public getSeasonsBetweenYearInterval(
     initialYear: number,
     finalYear: number
-  ): Observable<Season[]> {
+  ): Observable<Paginate> {
     if (initialYear > finalYear) {
       let aux = initialYear;
       initialYear = finalYear;
@@ -49,26 +56,44 @@ export class ErgastService {
     return this.getSeasons(offset, limit);
   }
 
-  public getSeasonsFromYearUntilNow(year: number): Observable<Season[]> {
+  public getSeasonsFromYearUntilNow(year: number): Observable<Paginate> {
     if (year < this.INITIAL_YEAR_FOR_F1_SERIES || year > this.CURRENT_YEAR) {
       throw new Error(this.YEAR_OUT_OF_RANGE_ERROR_MESSAGE);
     }
     return this.getSeasonsBetweenYearInterval(year, this.CURRENT_YEAR);
   }
 
-  public getWorldChampionByYear(year: number): Observable<DriverStanding[]> {
+  public getWorldChampionByYear(year: number): Observable<Paginate> {
     return this.httpClient
       .get<any>(
         `${this.API_F1_SERIES}/${this.ENDPOINTS.worldChampionByYear(year)}`
       )
       .pipe(
-        map((response) => response?.MRData?.StandingsTable?.StandingsLists)
+        map((response) => {
+          return {
+            limit: +response?.MRData?.limit,
+            offset: +response?.MRData?.offset,
+            total: +response?.MRData?.total,
+            results: response?.MRData?.StandingsTable?.StandingsLists,
+          };
+        })
       );
   }
 
-  public getAllRacesWinnersOfAYear(year: number): Observable<Race[]> {
+  public getAllRacesWinnersOfAYear(year: number): Observable<Paginate> {
     return this.httpClient
-      .get<any>(`${this.API_F1_SERIES}/${this.ENDPOINTS.allRacesWinnersOfAYear(year)}`)
-      .pipe(map((response) => response?.MRData?.RaceTable?.Races));
+      .get<any>(
+        `${this.API_F1_SERIES}/${this.ENDPOINTS.allRacesWinnersOfAYear(year)}`
+      )
+      .pipe(
+        map((response) => {
+          return {
+            limit: response?.MRData?.limit,
+            offset: response?.MRData?.offset,
+            total: response?.MRData?.total,
+            results: response?.MRData?.RaceTable?.Races,
+          };
+        })
+      );
   }
 }

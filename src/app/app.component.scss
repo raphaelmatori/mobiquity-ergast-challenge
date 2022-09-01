@@ -1,0 +1,15 @@
+@import "./styles/variables";
+
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+
+  header,
+  footer {
+    background-color: $dark-blue;
+    width: 100%;
+    height: 2rem;
+  }
+}
