@@ -1,0 +1,8 @@
+<div class="main-wrapper">
+  <p>Select a Year</p>
+  <app-list
+    [items]="items"
+    (selectedItemCallback)="selectedItemHandler($event)"
+    (fetchMoreItemsCallback)="fetchSeasonsData()"
+  ></app-list>
+</div>
