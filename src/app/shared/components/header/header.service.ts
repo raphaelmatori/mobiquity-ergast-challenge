@@ -28,6 +28,10 @@ export class HeaderService {
     return this.title;
   }
 
+  resetGoBackList() {
+    this.goBackTo = [];
+  }
+
   isGoBackAvailable(): boolean {
     return this.goBackTo.length > 0;
   }
