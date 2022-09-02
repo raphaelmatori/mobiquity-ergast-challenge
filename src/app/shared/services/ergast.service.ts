@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { environment } from "./../../../environments/environment";
+import { Driver } from "./../../models/driver.interface";
 import { Paginate } from "./../../models/paginate.interface";
 
 @Injectable({
@@ -63,20 +64,17 @@ export class ErgastService {
     return this.getSeasonsBetweenYearInterval(year, this.CURRENT_YEAR);
   }
 
-  public getWorldChampionByYear(year: number): Observable<Paginate> {
+  public getWorldChampionByYear(year: number): Observable<Driver> {
     return this.httpClient
       .get<any>(
         `${this.API_F1_SERIES}/${this.ENDPOINTS.worldChampionByYear(year)}`
       )
       .pipe(
-        map((response) => {
-          return {
-            limit: +response?.MRData?.limit,
-            offset: +response?.MRData?.offset,
-            total: +response?.MRData?.total,
-            results: response?.MRData?.StandingsTable?.StandingsLists,
-          };
-        })
+        map(
+          (response) =>
+            response?.MRData?.StandingsTable?.StandingsLists[0]
+              ?.DriverStandings[0]?.Driver
+        )
       );
   }
 

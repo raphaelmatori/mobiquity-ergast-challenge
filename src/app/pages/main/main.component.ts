@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Router } from "@angular/router";
 import { take } from "rxjs";
 import { Item } from "src/app/shared/components/list/models/item.interface";
 import { Season } from "./../../models/season.interface";
@@ -10,11 +11,13 @@ import { ErgastService } from "./../../shared/services/ergast.service";
   styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
-  private readonly PAGE_LIMIT = 30;
+  @ViewChild("listItemContent", { static: true })
+  itemContent!: TemplateRef<any>;
 
+  isLoading = false;
   items: Item[] = [];
 
-  constructor(private ergastService: ErgastService) {}
+  constructor(private router: Router, private ergastService: ErgastService) {}
 
   ngOnInit(): void {
     this.fetchSeasonsData();
@@ -30,13 +33,17 @@ export class MainComponent implements OnInit {
   }
 
   fetchSeasonsData() {
+    this.isLoading = true;
     this.ergastService
       .getSeasonsFromYearUntilNow(2005)
       .pipe(take(1))
-      .subscribe((page) => this.addSeasonsToItemsList(page.results));
+      .subscribe((page) => {
+        this.addSeasonsToItemsList(page.results);
+        this.isLoading = false;
+      });
   }
 
   selectedItemHandler(id: string) {
-    console.log(id);
+    this.router.navigate(["race-winners", id]);
   }
 }

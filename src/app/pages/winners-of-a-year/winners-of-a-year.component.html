@@ -1,0 +1,27 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+
+<div class="winners-wrapper" *ngIf="!isLoading">
+  <p>
+    World Champion:
+    {{ selectedDriver?.givenName + " " + selectedDriver?.familyName }}
+  </p>
+  <app-list
+    [items]="items"
+    (itemClickCallback)="selectedItemHandler($event)"
+    (fetchMoreItemsCallback)="fetchRacesData()"
+    [listItem]="itemContent"
+  ></app-list>
+</div>
+
+<ng-template #listItemContent let-item="item">
+  <div [ngClass]="{ 'winners-item-list': true, selected: item.selected }">
+    <p>Race: {{ item.title }}</p>
+    <p>Winner: {{ item.additionalInfo.winnerFullName }}</p>
+  </div>
+  <div *ngIf="item.selected" class="trophy">
+    <i
+      class="fa fa-trophy"
+      [title]="item.additionalInfo.winnerFullName + ' won this race'"
+    ></i>
+  </div>
+</ng-template>
