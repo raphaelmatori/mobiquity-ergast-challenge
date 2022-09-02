@@ -21,8 +21,13 @@ describe("ListComponent", () => {
   });
 
   it("should emit itemClickCallback when itemClickHandler is called", () => {
+    // Given
     spyOn(component.itemClickCallback, "emit");
+
+    // When
     component.itemClickHandler("anyString");
+
+    // Then
     expect(component.itemClickCallback.emit).toHaveBeenCalledTimes(1);
   });
 });

@@ -4,8 +4,8 @@ import {
   HttpTestingController,
 } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { httpAllRacesWinnersOfAYear } from "../../mocks/http-all-races-winners-of-a-year.mock";
-import { httpWorldChampionByYear } from "../../mocks/http-world-champion-by-year.mock";
+import { httpAllRacesWinnersOfAYearMock } from "../../mocks/http-all-races-winners-of-a-year.mock";
+import { httpWorldChampionByYearMock } from "../../mocks/http-world-champion-by-year.mock";
 import { environment } from "./../../../environments/environment";
 import { httpSeasonsMock } from "./../../mocks/http-seasons.mock";
 import { ErgastService } from "./ergast.service";
@@ -38,12 +38,15 @@ describe("ErgastService", () => {
   });
 
   it("should call getSeasons without passing pagination parameters ", () => {
+    // Given
     const limit = 30;
 
+    // When
     service.getSeasons().subscribe((page) => {
       expect(page.results.length).toBe(limit);
     });
 
+    // Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.seasons}?offset=0&limit=${limit}`
     );
@@ -52,33 +55,38 @@ describe("ErgastService", () => {
   });
 
   it("should call getSeasons passing pagination parameters ", () => {
+    // Given
     const offset = 10;
     const limit = 20;
 
+    // When
     service.getSeasons(offset, limit).subscribe((page) => {
       expect(page.results.length).toBe(limit);
     });
 
+    // Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.seasons}?offset=${offset}&limit=${limit}`
     );
-
     expect(req.request.method).toBe("GET");
   });
 
   it("should call getSeasonsBetweenYearInterval with a range between a given year interval", () => {
+    // Given
     const initialYear = 2015;
     const finalYear = 2000;
     const offset = 50; // skip the first 50 -> from 1950 until 1999
     const limit = 16; // get 16 -> from 2000 until 2015
 
     spyOn(service, "getSeasons").and.callThrough();
+
+    // When
     service.getSeasonsBetweenYearInterval(initialYear, finalYear).subscribe();
 
+    //Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.seasons}?offset=${offset}&limit=${limit}`
     );
-
     expect(req.request.method).toBe("GET");
     req.flush(httpSeasonsMock);
 
@@ -86,18 +94,20 @@ describe("ErgastService", () => {
   });
 
   it("should call getSeasonsFromYearUntilNow with a given year and return the season list from that year until now", () => {
+    // Given
     const givenYear = 2015;
     const currentYear = new Date().getFullYear();
     const limit = currentYear - givenYear + 1;
     const offset = givenYear - CONFIG.initialYearForF1Series;
     spyOn(service, "getSeasonsBetweenYearInterval").and.callThrough();
 
+    // When
     service.getSeasonsFromYearUntilNow(givenYear).subscribe();
 
+    //Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.seasons}?offset=${offset}&limit=${limit}`
     );
-
     expect(req.request.method).toBe("GET");
     req.flush(httpSeasonsMock);
 
@@ -105,36 +115,45 @@ describe("ErgastService", () => {
   });
 
   it("should throw an error when the given year is less than the initial year for f1 series", () => {
+    // Given
     const givenYear = 1949;
     spyOn(service, "getSeasonsBetweenYearInterval").and.callThrough();
+
+    // Then
     expect(function () {
       service.getSeasonsFromYearUntilNow(givenYear);
     }).toThrow();
   });
 
   it("should return the F1 World Champion for a given year", () => {
+    // Given
     const givenYear = 2015;
 
+    // When
     service.getWorldChampionByYear(givenYear).subscribe();
 
+    // Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.worldChampionByYear(givenYear)}`
     );
 
     expect(req.request.method).toBe("GET");
-    req.flush(httpWorldChampionByYear);
+    req.flush(httpWorldChampionByYearMock);
   });
 
   it("should get all winners of a race for a given year", () => {
+    // Given
     const givenYear = 2015;
 
+    // When
     service.getAllRacesWinnersOfAYear(givenYear).subscribe();
 
+    // Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.allRacesWinnersOfAYear(givenYear)}`
     );
 
     expect(req.request.method).toBe("GET");
-    req.flush(httpAllRacesWinnersOfAYear);
+    req.flush(httpAllRacesWinnersOfAYearMock);
   });
 });

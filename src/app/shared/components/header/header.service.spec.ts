@@ -15,12 +15,17 @@ describe("HeaderService", () => {
   });
 
   it("should navigate to route on goBackTo stack when goBack function is called", () => {
+    // Given
     service["goBackTo"] = ["/test"];
+
     spyOn(service["router"], "navigate").and.callFake(() =>
       Promise.resolve(true)
     );
+
+    // When
     service.goBack();
 
+    // Then
     expect(service["goBackTo"].length).toBe(0);
   });
 });

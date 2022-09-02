@@ -40,10 +40,15 @@ describe("MainComponent", () => {
   });
 
   it("should select item on item click", () => {
+    // Given
     spyOn(component["router"], "navigate").and.callFake(() =>
       Promise.resolve(true)
     );
+
+    // When
     component.selectedItemHandler("123");
+
+    // Then
     expect(component["router"].navigate).toHaveBeenCalledWith([
       "race-winners",
       "123",
