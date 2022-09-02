@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+} from "@angular/core";
 import { Item } from "./models/item.interface";
 
 @Component({
@@ -8,10 +14,11 @@ import { Item } from "./models/item.interface";
 })
 export class ListComponent {
   @Input() items: Item[] = [];
-  @Input() displayFetchNext: boolean = false;
-  @Output() selectedItemCallback: EventEmitter<string> = new EventEmitter();
+  @Input() listItem!: TemplateRef<any>;
 
-  selectedItem(id: string): void {
-    this.selectedItemCallback.emit(id);
+  @Output() itemClickCallback: EventEmitter<string> = new EventEmitter();
+
+  itemClickHandler(id: string): void {
+    this.itemClickCallback.emit(id);
   }
 }

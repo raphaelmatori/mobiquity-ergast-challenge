@@ -1,13 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import {
   HttpClientTestingModule,
-  HttpTestingController
+  HttpTestingController,
 } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
 import { environment } from "./../../../environments/environment";
-import { httpAllRacesWinnersOfAYear } from './../../mocks/http-all-races-winners-of-a-year';
-import { httpSeasonsMock } from './../../mocks/http-seasons.mock';
-import { httpWorldChampionByYear } from './../../mocks/http-world-champion-by-year';
+import { httpAllRacesWinnersOfAYear } from "./../../mocks/http-all-races-winners-of-a-year";
+import { httpSeasonsMock } from "./../../mocks/http-seasons.mock";
+import { httpWorldChampionByYear } from "./../../mocks/http-world-champion-by-year";
 import { ErgastService } from "./ergast.service";
 
 describe("ErgastService", () => {
@@ -22,7 +22,7 @@ describe("ErgastService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-    })
+    });
 
     service = TestBed.inject(ErgastService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -40,9 +40,8 @@ describe("ErgastService", () => {
   it("should call getSeasons without passing pagination parameters ", () => {
     const limit = 30;
 
-    service.getSeasons().subscribe((seasons) => {
-      expect(seasons.length).toBe(limit);
-      expect(seasons).toEqual(seasons);
+    service.getSeasons().subscribe((page) => {
+      expect(page.results.length).toBe(limit);
     });
 
     const req = httpMock.expectOne(
@@ -56,9 +55,8 @@ describe("ErgastService", () => {
     const offset = 10;
     const limit = 20;
 
-    service.getSeasons(offset, limit).subscribe((seasons) => {
-      expect(seasons.length).toBe(limit);
-      expect(seasons).toEqual(seasons);
+    service.getSeasons(offset, limit).subscribe((page) => {
+      expect(page.results.length).toBe(limit);
     });
 
     const req = httpMock.expectOne(
@@ -72,7 +70,7 @@ describe("ErgastService", () => {
     const initialYear = 2015;
     const finalYear = 2000;
     const offset = 50; // skip the first 50 -> from 1950 until 1999
-    const limit = 16 // get 16 -> from 2000 until 2015
+    const limit = 16; // get 16 -> from 2000 until 2015
 
     spyOn(service, "getSeasons").and.callThrough();
     service.getSeasonsBetweenYearInterval(initialYear, finalYear).subscribe();
@@ -104,13 +102,14 @@ describe("ErgastService", () => {
     req.flush(httpSeasonsMock);
 
     expect(service.getSeasonsBetweenYearInterval).toHaveBeenCalledTimes(1);
-
   });
 
   it("should throw an error when the given year is less than the initial year for f1 series", () => {
     const givenYear = 1949;
     spyOn(service, "getSeasonsBetweenYearInterval").and.callThrough();
-    expect(function() { service.getSeasonsFromYearUntilNow(givenYear)}).toThrow();
+    expect(function () {
+      service.getSeasonsFromYearUntilNow(givenYear);
+    }).toThrow();
   });
 
   it("should return the F1 World Champion for a given year", () => {
@@ -124,7 +123,6 @@ describe("ErgastService", () => {
 
     expect(req.request.method).toBe("GET");
     req.flush(httpWorldChampionByYear);
-
   });
 
   it("should get all winners of a race for a given year", () => {
@@ -137,8 +135,6 @@ describe("ErgastService", () => {
     );
 
     expect(req.request.method).toBe("GET");
-    req.flush(httpAllRacesWinnersOfAYear)
+    req.flush(httpAllRacesWinnersOfAYear);
   });
-  
-  
 });
