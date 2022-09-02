@@ -1,7 +1,11 @@
 import { HttpClientModule } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
+import { of } from "rxjs";
+import { httpSeasonsMock } from "./../../mocks/http-seasons.mock";
+import { ErgastService } from "./../../shared/services/ergast.service";
 
+import { emptyPageMock } from "src/app/mocks/http-empty-page.mock";
 import { MainComponent } from "./main.component";
 
 describe("MainComponent", () => {
@@ -12,6 +16,18 @@ describe("MainComponent", () => {
     await TestBed.configureTestingModule({
       declarations: [MainComponent],
       imports: [RouterTestingModule, HttpClientModule],
+      providers: [
+        {
+          provide: ErgastService,
+          useValue: {
+            getSeasonsFromYearUntilNow: () =>
+              of({
+                ...emptyPageMock,
+                results: httpSeasonsMock.MRData.SeasonTable.Seasons,
+              }),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainComponent);
