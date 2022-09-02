@@ -22,4 +22,15 @@ describe("MainComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  it("should select item on item click", () => {
+    spyOn(component["router"], "navigate").and.callFake(() =>
+      Promise.resolve(true)
+    );
+    component.selectedItemHandler("123");
+    expect(component["router"].navigate).toHaveBeenCalledWith([
+      "race-winners",
+      "123",
+    ]);
+  });
 });
