@@ -6,15 +6,21 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Documentation
 
-For the full description of this challenge, refer to `/docs/frontend-challenge-description.pdf` file.
+For the full description of this challenge, refer to [/docs/frontend-challenge-description.pdf](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/frontend-challenge-description.pdf).
+
+You can also see some extra info about how the project is divided, assumptions, etc. in [this](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/project-info.pdf) file
 
 ## API
 
 The API documentation can be found in `http://ergast.com/mrd/`
 
-## Development server
+## Running the project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+In the root folder of this repository, open your terminal and run `npm install`.
+
+Then `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+Alternatively, you can access the deployed project [here](https://raphaelmatori.github.io/mobiquity-ergast-challenge)
 
 ## Build
 
