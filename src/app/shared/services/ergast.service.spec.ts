@@ -129,31 +129,58 @@ describe("ErgastService", () => {
   it("should return the F1 World Champion for a given year", () => {
     // Given
     const givenYear = 2015;
-
     // When
     service.getWorldChampionByYear(givenYear).subscribe();
-
     // Then
-    const req = httpMock.expectOne(
+    const req1 = httpMock.expectOne(
+      `${API_F1_SERIES}/${ENDPOINTS.allRacesOfAYear(givenYear)}`
+    );
+
+    expect(req1.request.method).toBe("GET");
+    req1.flush(httpAllRacesWinnersOfAYearMock);
+
+    const req2 = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.worldChampionByYear(givenYear)}`
     );
 
-    expect(req.request.method).toBe("GET");
-    req.flush(httpWorldChampionByYearMock);
+    expect(req2.request.method).toBe("GET");
+    req2.flush(httpWorldChampionByYearMock);
+  });
+
+  it("should not return the F1 World Champion for a given year when the championship is still opened", () => {
+    // Given
+    const givenYear = 2015;
+    // When
+    service.getWorldChampionByYear(givenYear).subscribe();
+    // Then
+    const req1 = httpMock.expectOne(
+      `${API_F1_SERIES}/${ENDPOINTS.allRacesOfAYear(givenYear)}`
+    );
+
+    expect(req1.request.method).toBe("GET");
+    req1.flush({
+      ...httpAllRacesWinnersOfAYearMock,
+      MRData: {
+        RaceTable: {
+          Races: [
+            {
+              date: new Date().toISOString().slice(0, 10),
+            },
+          ],
+        },
+      },
+    });
   });
 
   it("should get all winners of a race for a given year", () => {
     // Given
     const givenYear = 2015;
-
     // When
     service.getAllRacesWinnersOfAYear(givenYear).subscribe();
-
     // Then
     const req = httpMock.expectOne(
       `${API_F1_SERIES}/${ENDPOINTS.allRacesWinnersOfAYear(givenYear)}`
     );
-
     expect(req.request.method).toBe("GET");
     req.flush(httpAllRacesWinnersOfAYearMock);
   });

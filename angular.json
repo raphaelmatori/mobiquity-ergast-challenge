@@ -96,7 +96,10 @@
             "styles": ["src/styles.scss"],
             "scripts": [],
             "codeCoverage": true,
-            "codeCoverageExclude": ["src/app/shared/services/interfaces/*"],
+            "codeCoverageExclude": [
+              "src/app/shared/services/interfaces/*",
+              "src/environments/*"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/app/styles"]
             }

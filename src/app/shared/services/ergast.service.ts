@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Driver } from "@app-models/driver.interface";
 import { Paginate } from "@app-models/paginate.interface";
 import { environment } from "@env/environment";
-import { map, Observable } from "rxjs";
+import { map, Observable, switchMap } from "rxjs";
 import { F1Service } from "./interfaces/f1.service.interface";
 
 @Injectable()
@@ -67,17 +67,36 @@ export class ErgastService extends F1Service {
     return this.getSeasonsBetweenYearInterval(year, this.CURRENT_YEAR);
   }
 
-  public override getWorldChampionByYear(year: number): Observable<Driver> {
+  public override getWorldChampionByYear(
+    year: number
+  ): Observable<Driver | null> {
     return this.httpClient
-      .get<any>(
-        `${this.API_F1_SERIES}/${this.ENDPOINTS.worldChampionByYear(year)}`
-      )
+      .get<any>(`${this.API_F1_SERIES}/${this.ENDPOINTS.allRacesOfAYear(year)}`)
       .pipe(
-        map(
-          (response) =>
-            response?.MRData?.StandingsTable?.StandingsLists[0]
-              ?.DriverStandings[0]?.Driver
-        )
+        switchMap((response) => {
+          const races = response?.MRData?.RaceTable?.Races;
+          const lastRaceHasAlreadyTakenPlace =
+            races[races.length - 1].date <
+            new Date().toISOString().slice(0, 10);
+
+          if (!lastRaceHasAlreadyTakenPlace) {
+            return new Observable<null>((observer) => observer.next(null));
+          }
+
+          return this.httpClient
+            .get<any>(
+              `${this.API_F1_SERIES}/${this.ENDPOINTS.worldChampionByYear(
+                year
+              )}`
+            )
+            .pipe(
+              map(
+                (response) =>
+                  response?.MRData?.StandingsTable?.StandingsLists[0]
+                    ?.DriverStandings[0]?.Driver
+              )
+            );
+        })
       );
   }
 
