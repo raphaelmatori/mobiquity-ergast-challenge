@@ -4,11 +4,10 @@ import { Driver } from "@app-models/driver.interface";
 import { Paginate } from "@app-models/paginate.interface";
 import { environment } from "@env/environment";
 import { map, Observable } from "rxjs";
+import { F1Service } from "./interfaces/f1.service.interface";
 
-@Injectable({
-  providedIn: "root",
-})
-export class ErgastService {
+@Injectable()
+export class ErgastService extends F1Service {
   private readonly API_F1_SERIES = environment.apiF1Series;
   private readonly ENDPOINTS = environment.endpoints;
   private readonly CONFIG = environment.config;
@@ -18,9 +17,11 @@ export class ErgastService {
 
   private readonly YEAR_OUT_OF_RANGE_ERROR_MESSAGE = `The 'year' parameter must be in the interval ${this.INITIAL_YEAR_FOR_F1_SERIES} ~ ${this.CURRENT_YEAR}`;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    super();
+  }
 
-  public getSeasons(
+  public override getSeasons(
     offset: number = 0,
     limit: number = this.CONFIG.pagination.pageLimit
   ): Observable<Paginate> {
@@ -40,7 +41,7 @@ export class ErgastService {
       );
   }
 
-  public getSeasonsBetweenYearInterval(
+  public override getSeasonsBetweenYearInterval(
     initialYear: number,
     finalYear: number
   ): Observable<Paginate> {
@@ -57,14 +58,16 @@ export class ErgastService {
     return this.getSeasons(offset, limit);
   }
 
-  public getSeasonsFromYearUntilNow(year: number): Observable<Paginate> {
+  public override getSeasonsFromYearUntilNow(
+    year: number
+  ): Observable<Paginate> {
     if (year < this.INITIAL_YEAR_FOR_F1_SERIES || year > this.CURRENT_YEAR) {
       throw new Error(this.YEAR_OUT_OF_RANGE_ERROR_MESSAGE);
     }
     return this.getSeasonsBetweenYearInterval(year, this.CURRENT_YEAR);
   }
 
-  public getWorldChampionByYear(year: number): Observable<Driver> {
+  public override getWorldChampionByYear(year: number): Observable<Driver> {
     return this.httpClient
       .get<any>(
         `${this.API_F1_SERIES}/${this.ENDPOINTS.worldChampionByYear(year)}`
@@ -78,7 +81,9 @@ export class ErgastService {
       );
   }
 
-  public getAllRacesWinnersOfAYear(year: number): Observable<Paginate> {
+  public override getAllRacesWinnersOfAYear(
+    year: number
+  ): Observable<Paginate> {
     return this.httpClient
       .get<any>(
         `${this.API_F1_SERIES}/${this.ENDPOINTS.allRacesWinnersOfAYear(year)}`

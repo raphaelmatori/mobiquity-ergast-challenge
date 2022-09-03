@@ -7,7 +7,7 @@ import { httpAllRacesWinnersOfAYearMock } from "@app-mocks/http-all-races-winner
 import { emptyPageMock } from "@app-mocks/http-empty-page.mock";
 import { httpWorldChampionByYearMock } from "@app-mocks/http-world-champion-by-year.mock";
 import { Driver } from "@app-models/driver.interface";
-import { ErgastService } from "@app-shared/services/ergast.service";
+import { F1Service } from "@app-shared/services/interfaces/f1.service.interface";
 import { of, throwError } from "rxjs";
 import { RaceWinnersComponent } from "./race-winners.component";
 
@@ -22,7 +22,7 @@ describe("RaceWinnersComponent", () => {
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
         {
-          provide: ErgastService,
+          provide: F1Service,
           useValue: {
             getWorldChampionByYear: () => of(httpWorldChampionByYearMock),
             getAllRacesWinnersOfAYear: () =>
@@ -91,7 +91,7 @@ describe("RaceWinnersComponent", () => {
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
         {
-          provide: ErgastService,
+          provide: F1Service,
           useValue: {
             getWorldChampionByYear: () => of(httpWorldChampionByYearMock),
             getAllRacesWinnersOfAYear: () =>
@@ -129,7 +129,7 @@ describe("RaceWinnersComponent", () => {
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
         {
-          provide: ErgastService,
+          provide: F1Service,
           useValue: {
             getWorldChampionByYear: () => {
               throw Error("error");
@@ -157,11 +157,9 @@ describe("RaceWinnersComponent", () => {
     fixture = TestBed.createComponent(RaceWinnersComponent);
     component = fixture.componentInstance;
 
-    spyOn(component["ergastService"], "getWorldChampionByYear").and.callFake(
-      () => {
-        return throwError(() => new Error("test"));
-      }
-    );
+    spyOn(component["f1Service"], "getWorldChampionByYear").and.callFake(() => {
+      return throwError(() => new Error("test"));
+    });
 
     fixture.detectChanges();
 
