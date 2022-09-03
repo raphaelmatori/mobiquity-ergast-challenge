@@ -6,13 +6,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Documentation
 
-For the full description of this challenge, refer to [/docs/frontend-challenge-description.pdf](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/frontend-challenge-description.pdf).
+For the full description of this challenge, refer to [this](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/frontend-challenge-description.pdf) document.
 
-You can also see some extra info about how the project is divided, assumptions, etc. in [this](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/project-info.pdf) file
-
-## API
-
-The API documentation can be found in `http://ergast.com/mrd/`
+You can also see some extra info about how the project is divided, assumptions, etc. in [this](https://github.com/raphaelmatori/mobiquity-ergast-challenge/blob/main/docs/project-info.pdf) file.
 
 ## Running the project
 
