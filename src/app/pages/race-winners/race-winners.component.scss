@@ -1,4 +1,4 @@
-@import "./../../styles/variables";
+@import "_variables";
 
 ::ng-deep app-race-winners {
   display: flex;
@@ -58,14 +58,16 @@
   .trophy {
     display: flex;
     justify-content: flex-end;
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: $dark-blue;
     height: 0;
 
     i {
       position: relative;
-      top: -1.8rem;
-      right: -0.5rem;
+      top: -2.05rem;
+      right: -0.8rem;
+      color: $golden;
+      text-shadow: 2px 2px $dark-blue;
     }
   }
 }

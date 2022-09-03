@@ -6,6 +6,13 @@ import {
   ViewChild,
 } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { Driver } from "@app-models/driver.interface";
+import { Paginate } from "@app-models/paginate.interface";
+import { Race } from "@app-models/race.interface";
+import { HeaderService } from "@app-shared/components/header/header.service";
+import { Item } from "@app-shared/components/list/models/item.interface";
+import { ERROR_MESSAGES } from "@app-shared/constants/error-messages";
+import { F1Service } from "@app-shared/services/interfaces/f1.service.interface";
 import {
   catchError,
   Observable,
@@ -16,13 +23,6 @@ import {
   tap,
   throwError,
 } from "rxjs";
-import { Item } from "src/app/shared/components/list/models/item.interface";
-import { Driver } from "../../models/driver.interface";
-import { Paginate } from "../../models/paginate.interface";
-import { Race } from "../../models/race.interface";
-import { HeaderService } from "../../shared/components/header/header.service";
-import { ErgastService } from "../../shared/services/ergast.service";
-import { ERROR_MESSAGES } from "./../../shared/constants/error-messages";
 @Component({
   selector: "app-race-winners",
   templateUrl: "./race-winners.component.html",
@@ -42,7 +42,7 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private ergastService: ErgastService,
+    private f1Service: F1Service,
     private headerService: HeaderService
   ) {}
 
@@ -75,10 +75,12 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private fetchWorldChampionOfAYear(): Observable<Driver> {
-    return this.ergastService.getWorldChampionByYear(this.yearBase).pipe(
+  private fetchWorldChampionOfAYear(): Observable<Driver | null> {
+    return this.f1Service.getWorldChampionByYear(this.yearBase).pipe(
       take(1),
-      tap((driver) => (this.worldChampion = driver)),
+      tap((driver) => {
+        this.worldChampion = driver;
+      }),
       catchError((err) => {
         this.isLoading = false;
         this.errorMessage = ERROR_MESSAGES.API_FETCH_FAIL;
@@ -107,7 +109,7 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
     };
   }
   fetchRacesData(): Observable<Paginate> {
-    return this.ergastService.getAllRacesWinnersOfAYear(this.yearBase).pipe(
+    return this.f1Service.getAllRacesWinnersOfAYear(this.yearBase).pipe(
       take(1),
       tap((page) => {
         this.addRaceToItemsList(page.results);

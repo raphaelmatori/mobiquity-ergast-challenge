@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
+import { Item } from "@app-shared/components/list/models/item.interface";
+import { F1Service } from "@app-shared/services/interfaces/f1.service.interface";
+import { Season } from "@app/models/season.interface";
 import { take } from "rxjs";
-import { Item } from "src/app/shared/components/list/models/item.interface";
-import { Season } from "./../../models/season.interface";
-import { ErgastService } from "./../../shared/services/ergast.service";
 
 @Component({
   selector: "app-main",
@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
   isLoading = false;
   items: Item[] = [];
 
-  constructor(private router: Router, private ergastService: ErgastService) {}
+  constructor(private router: Router, private f1Service: F1Service) {}
 
   ngOnInit(): void {
     this.fetchSeasonsData();
@@ -34,7 +34,7 @@ export class MainComponent implements OnInit {
 
   fetchSeasonsData() {
     this.isLoading = true;
-    this.ergastService
+    this.f1Service
       .getSeasonsFromYearUntilNow(2005)
       .pipe(take(1))
       .subscribe((page) => {

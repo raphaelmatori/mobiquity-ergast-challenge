@@ -1,4 +1,4 @@
-import { Result } from "./../models/result.interface";
+import { Result } from "@app-models/result.interface";
 import { Circuit } from "./circuit.interface";
 export interface Race {
   season: string;
