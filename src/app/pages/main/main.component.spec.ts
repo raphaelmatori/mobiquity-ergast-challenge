@@ -1,11 +1,12 @@
 import { HttpClientModule } from "@angular/common/http";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
+import { httpSeasonsMock } from "@app-mocks/http-seasons.mock";
+import { ErgastService } from "@app-shared/services/ergast.service";
 import { of } from "rxjs";
-import { httpSeasonsMock } from "./../../mocks/http-seasons.mock";
-import { ErgastService } from "./../../shared/services/ergast.service";
 
-import { emptyPageMock } from "src/app/mocks/http-empty-page.mock";
+import { emptyPageMock } from "@app-mocks/http-empty-page.mock";
 import { MainComponent } from "./main.component";
 
 describe("MainComponent", () => {
@@ -14,6 +15,7 @@ describe("MainComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [MainComponent],
       imports: [RouterTestingModule, HttpClientModule],
       providers: [

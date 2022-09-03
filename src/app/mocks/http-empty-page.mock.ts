@@ -1,4 +1,4 @@
-import { Paginate } from "./../models/paginate.interface";
+import { Paginate } from "@app-models/paginate.interface";
 export const emptyPageMock = {
   limit: 0,
   offset: 0,

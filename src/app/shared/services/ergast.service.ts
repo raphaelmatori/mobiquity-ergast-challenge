@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Driver } from "@app-models/driver.interface";
+import { Paginate } from "@app-models/paginate.interface";
+import { environment } from "@env/environment";
 import { map, Observable } from "rxjs";
-import { environment } from "./../../../environments/environment";
-import { Driver } from "./../../models/driver.interface";
-import { Paginate } from "./../../models/paginate.interface";
 
 @Injectable({
   providedIn: "root",

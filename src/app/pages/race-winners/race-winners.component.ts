@@ -6,6 +6,13 @@ import {
   ViewChild,
 } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
+import { Driver } from "@app-models/driver.interface";
+import { Paginate } from "@app-models/paginate.interface";
+import { Race } from "@app-models/race.interface";
+import { HeaderService } from "@app-shared/components/header/header.service";
+import { Item } from "@app-shared/components/list/models/item.interface";
+import { ERROR_MESSAGES } from "@app-shared/constants/error-messages";
+import { ErgastService } from "@app-shared/services/ergast.service";
 import {
   catchError,
   Observable,
@@ -16,13 +23,6 @@ import {
   tap,
   throwError,
 } from "rxjs";
-import { Item } from "src/app/shared/components/list/models/item.interface";
-import { Driver } from "../../models/driver.interface";
-import { Paginate } from "../../models/paginate.interface";
-import { Race } from "../../models/race.interface";
-import { HeaderService } from "../../shared/components/header/header.service";
-import { ErgastService } from "../../shared/services/ergast.service";
-import { ERROR_MESSAGES } from "./../../shared/constants/error-messages";
 @Component({
   selector: "app-race-winners",
   templateUrl: "./race-winners.component.html",

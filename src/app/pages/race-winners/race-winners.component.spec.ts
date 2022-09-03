@@ -1,13 +1,14 @@
 import { HttpClientModule } from "@angular/common/http";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, convertToParamMap } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
+import { httpAllRacesWinnersOfAYearMock } from "@app-mocks/http-all-races-winners-of-a-year.mock";
+import { emptyPageMock } from "@app-mocks/http-empty-page.mock";
+import { httpWorldChampionByYearMock } from "@app-mocks/http-world-champion-by-year.mock";
+import { Driver } from "@app-models/driver.interface";
+import { ErgastService } from "@app-shared/services/ergast.service";
 import { of, throwError } from "rxjs";
-import { httpAllRacesWinnersOfAYearMock } from "../../mocks/http-all-races-winners-of-a-year.mock";
-import { emptyPageMock } from "../../mocks/http-empty-page.mock";
-import { httpWorldChampionByYearMock } from "../../mocks/http-world-champion-by-year.mock";
-import { ErgastService } from "../../shared/services/ergast.service";
-import { Driver } from "./../../models/driver.interface";
 import { RaceWinnersComponent } from "./race-winners.component";
 
 describe("RaceWinnersComponent", () => {
@@ -16,6 +17,7 @@ describe("RaceWinnersComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [RaceWinnersComponent],
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
@@ -170,10 +172,13 @@ describe("RaceWinnersComponent", () => {
 
   it("should return false when shouldDisplayErrorMessage is called and errorMessage is null", () => {
     // Given
+    fixture = TestBed.createComponent(RaceWinnersComponent);
+    component = fixture.componentInstance;
     component.errorMessage = null;
 
     // When
-    const shouldDisplayErrorMessage = component.shouldDisplayErrorMessage();
+    const shouldDisplayErrorMessage: boolean =
+      component.shouldDisplayErrorMessage();
 
     // Then
     expect(shouldDisplayErrorMessage).toBe(false);
@@ -181,6 +186,8 @@ describe("RaceWinnersComponent", () => {
 
   it("should return true when shouldDisplayErrorMessage is called and errorMessage is not null", () => {
     // Given
+    fixture = TestBed.createComponent(RaceWinnersComponent);
+    component = fixture.componentInstance;
     component.errorMessage = "any message here";
 
     // When
@@ -192,6 +199,8 @@ describe("RaceWinnersComponent", () => {
 
   it("should concatenate Driver's given name and family name", () => {
     // Given
+    fixture = TestBed.createComponent(RaceWinnersComponent);
+    component = fixture.componentInstance;
     const driver: Driver =
       httpAllRacesWinnersOfAYearMock.MRData.RaceTable.Races[0].Results[0]
         .Driver;
