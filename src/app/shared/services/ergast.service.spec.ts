@@ -4,10 +4,10 @@ import {
   HttpTestingController,
 } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { httpAllRacesWinnersOfAYearMock } from "../../mocks/http-all-races-winners-of-a-year.mock";
-import { httpWorldChampionByYearMock } from "../../mocks/http-world-champion-by-year.mock";
-import { environment } from "./../../../environments/environment";
-import { httpSeasonsMock } from "./../../mocks/http-seasons.mock";
+import { httpAllRacesWinnersOfAYearMock } from "@app-mocks/http-all-races-winners-of-a-year.mock";
+import { httpSeasonsMock } from "@app-mocks/http-seasons.mock";
+import { httpWorldChampionByYearMock } from "@app-mocks/http-world-champion-by-year.mock";
+import { environment } from "@env/environment";
 import { ErgastService } from "./ergast.service";
 
 describe("ErgastService", () => {

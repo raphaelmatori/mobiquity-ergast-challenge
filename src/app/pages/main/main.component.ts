@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
+import { Item } from "@app-shared/components/list/models/item.interface";
+import { ErgastService } from "@app-shared/services/ergast.service";
+import { Season } from "@app/models/season.interface";
 import { take } from "rxjs";
-import { Item } from "src/app/shared/components/list/models/item.interface";
-import { Season } from "./../../models/season.interface";
-import { ErgastService } from "./../../shared/services/ergast.service";
 
 @Component({
   selector: "app-main",
