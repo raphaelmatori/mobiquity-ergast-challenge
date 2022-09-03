@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { httpSeasonsMock } from "@app-mocks/http-seasons.mock";
-import { ErgastService } from "@app-shared/services/ergast.service";
+import { F1Service } from "@app-shared/services/interfaces/f1.service.interface";
 import { of } from "rxjs";
 
 import { emptyPageMock } from "@app-mocks/http-empty-page.mock";
@@ -20,7 +20,7 @@ describe("MainComponent", () => {
       imports: [RouterTestingModule, HttpClientModule],
       providers: [
         {
-          provide: ErgastService,
+          provide: F1Service,
           useValue: {
             getSeasonsFromYearUntilNow: () =>
               of({

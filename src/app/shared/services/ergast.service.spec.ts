@@ -22,6 +22,7 @@ describe("ErgastService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [ErgastService],
     });
 
     service = TestBed.inject(ErgastService);

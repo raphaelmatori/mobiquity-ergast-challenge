@@ -12,7 +12,7 @@ import { Race } from "@app-models/race.interface";
 import { HeaderService } from "@app-shared/components/header/header.service";
 import { Item } from "@app-shared/components/list/models/item.interface";
 import { ERROR_MESSAGES } from "@app-shared/constants/error-messages";
-import { ErgastService } from "@app-shared/services/ergast.service";
+import { F1Service } from "@app-shared/services/interfaces/f1.service.interface";
 import {
   catchError,
   Observable,
@@ -42,7 +42,7 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private ergastService: ErgastService,
+    private f1Service: F1Service,
     private headerService: HeaderService
   ) {}
 
@@ -76,7 +76,7 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
   }
 
   private fetchWorldChampionOfAYear(): Observable<Driver> {
-    return this.ergastService.getWorldChampionByYear(this.yearBase).pipe(
+    return this.f1Service.getWorldChampionByYear(this.yearBase).pipe(
       take(1),
       tap((driver) => (this.worldChampion = driver)),
       catchError((err) => {
@@ -107,7 +107,7 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
     };
   }
   fetchRacesData(): Observable<Paginate> {
-    return this.ergastService.getAllRacesWinnersOfAYear(this.yearBase).pipe(
+    return this.f1Service.getAllRacesWinnersOfAYear(this.yearBase).pipe(
       take(1),
       tap((page) => {
         this.addRaceToItemsList(page.results);
