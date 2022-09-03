@@ -209,4 +209,16 @@ describe("RaceWinnersComponent", () => {
     // Then
     expect(result).toEqual("Valtteri Bottas");
   });
+
+  it("should return an empty string when Driver is missing", () => {
+    // Given
+    fixture = TestBed.createComponent(RaceWinnersComponent);
+    component = fixture.componentInstance;
+
+    // When
+    const result = component.getDriverFullName(null);
+
+    // Then
+    expect(result).toEqual("");
+  });
 });

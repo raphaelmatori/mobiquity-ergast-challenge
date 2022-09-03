@@ -20,7 +20,7 @@ export class F1Service {
     return new Observable<Paginate>();
   }
 
-  public getWorldChampionByYear(year: number): Observable<Driver> {
+  public getWorldChampionByYear(year: number): Observable<Driver | null> {
     return new Observable<Driver>();
   }
 

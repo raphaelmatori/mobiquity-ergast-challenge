@@ -75,10 +75,12 @@ export class RaceWinnersComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  private fetchWorldChampionOfAYear(): Observable<Driver> {
+  private fetchWorldChampionOfAYear(): Observable<Driver | null> {
     return this.f1Service.getWorldChampionByYear(this.yearBase).pipe(
       take(1),
-      tap((driver) => (this.worldChampion = driver)),
+      tap((driver) => {
+        this.worldChampion = driver;
+      }),
       catchError((err) => {
         this.isLoading = false;
         this.errorMessage = ERROR_MESSAGES.API_FETCH_FAIL;
